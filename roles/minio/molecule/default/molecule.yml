@@ -1,0 +1,31 @@
+---
+
+dependency:
+  name: galaxy
+
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+
+platforms:
+  - name: minio-ubuntu-18.04
+    box: "ubuntu/bionic64"
+    provision: True
+    provider_raw_config_args:
+      - "customize ['modifyvm', :id, '--uartmode1', 'disconnected']"
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        ip: 192.168.99.7
+        type: static
+
+provisioner:
+  name: ansible
+  log: true
+
+verifier:
+  name: ansible
+
+scenario:
+  name: default

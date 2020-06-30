@@ -1,0 +1,21 @@
+- name: Create the Minio data storage directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ minio_user }}"
+    group: "{{ minio_group }}"
+    mode: 0750
+  when: minio_server_make_datadirs
+  with_items: "{{ minio_server_datadirs }}"
+  
+- name: Generate the Minio server envfile
+  template:
+    src: minio.env.j2
+    dest: "{{ minio_server_envfile }}"
+    owner: "root"
+    group: "{{ minio_group }}"
+    mode: 0640
+  notify:
+    - reload minio systemd
+    - restart minio
+

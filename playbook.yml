@@ -1,0 +1,16 @@
+- hosts: all
+  become: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  vars_files:
+    - ./default.yml
+  tasks:
+    - name: Install MinIO
+      include_role:
+        name: minio
+        tasks_from: "{{ task_item }}"
+      loop:
+        - install
+        - configure
+      loop_control:
+        loop_var: task_item

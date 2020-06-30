@@ -1,0 +1,11 @@
+.molecule/
+.vagrant/
+.cache/
+.idea/
+
+# TestInfra tests
+tests/__pycache__/
+*.pyc
+
+*.retry
+.tox

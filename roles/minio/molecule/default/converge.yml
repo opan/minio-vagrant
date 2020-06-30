@@ -1,0 +1,16 @@
+---
+- name: "MinIO"
+  hosts: minio-ubuntu-18.04
+  any_errors_fatal: true
+  become: true
+  tasks:
+    - name: "Install MinIO"
+      include_role:
+        name: "minio"
+        tasks_from: "install"
+
+    - name: "Configure MinIO"
+      include_role:
+        name: "minio"
+        tasks_from: "configure"
+
