@@ -12,6 +12,11 @@ Vagrant.configure("2") do |config|
     ha.vm.network "private_network", ip: "192.168.5.19"
     ha.vm.hostname = "haproxy1"
 
+    ha.vm.provision "shell", path: "scripts/haproxy-keepalived-install.sh"
+    ha.vm.provision "file", source: "configs/haproxy.cfg", destination: "/tmp/haproxy.cfg"
+    ha.vm.provision "file", source: "configs/keepalived-active.conf", destination: "/tmp/keepalived.conf"
+    ha.vm.provision "file", source: "scripts/keepalived-as-primary.sh", destination: "/tmp/primary.sh"
+    ha.vm.provision "shell", path: "scripts/after-setup.sh"
     # ha.vm.provision :ansible do |ansible|
     #   ansible.playbook = "playbook-haproxy.yml"
     #   ansible.galaxy_role_file = "requirements.yml"
@@ -27,9 +32,9 @@ Vagrant.configure("2") do |config|
     ha.vm.hostname = "haproxy2"
 
     ha.vm.provision "shell", path: "scripts/haproxy-keepalived-install.sh"
-    ha.vm.provision "file", source: "./configs/haproxy.cfg", destination: "/tmp/haproxy.cfg"
-    ha.vm.provision "file", source: "./configs/keepalived.conf", destination: "/tmp/keepalived.conf"
-    ha.vm.provision "shell", path: "scripts/move-files.sh"
+    ha.vm.provision "file", source: "configs/haproxy.cfg", destination: "/tmp/haproxy.cfg"
+    ha.vm.provision "file", source: "configs/keepalived-passive.conf", destination: "/tmp/keepalived.conf"
+    ha.vm.provision "shell", path: "scripts/after-setup.sh"
 
     # ha.vm.provision :ansible do |ansible|
     #   ansible.playbook = "playbook-haproxy.yml"
