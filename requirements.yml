@@ -1,2 +1,4 @@
 - src: git@source.golabs.io:gopay_infra/ansible/roles/minio.git
   scm: git
+
+- src: geerlingguy.haproxy
