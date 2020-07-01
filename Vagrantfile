@@ -6,7 +6,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  
+
   config.vm.define "haproxy1" do |ha|
     ha.vm.box = "ubuntu/bionic64"
     ha.vm.network "private_network", ip: "192.168.5.19"
@@ -21,19 +21,24 @@ Vagrant.configure("2") do |config|
     # end
   end
 
-  # config.vm.define "haproxy2" do |ha|
-  #   ha.vm.box = "ubuntu/bionic64"
-  #   ha.vm.network "private_network", ip: "192.168.5.18"
-  #   ha.vm.hostname = "haproxy2"
+  config.vm.define "haproxy2" do |ha|
+    ha.vm.box = "ubuntu/bionic64"
+    ha.vm.network "private_network", ip: "192.168.5.18"
+    ha.vm.hostname = "haproxy2"
 
-  #   # ha.vm.provision :ansible do |ansible|
-  #   #   ansible.playbook = "playbook-haproxy.yml"
-  #   #   ansible.galaxy_role_file = "requirements.yml"
-  #   #   ansible.become = true
-  #   #   ansible.verbose = true
-  #   #   ansible.extra_vars = {}
-  #   # end
-  # end
+    ha.vm.provision "shell", path: "scripts/haproxy-keepalived-install.sh"
+    ha.vm.provision "file", source: "./configs/haproxy.cfg", destination: "/tmp/haproxy.cfg"
+    ha.vm.provision "file", source: "./configs/keepalived.conf", destination: "/tmp/keepalived.conf"
+    ha.vm.provision "shell", path: "scripts/move-files.sh"
+
+    # ha.vm.provision :ansible do |ansible|
+    #   ansible.playbook = "playbook-haproxy.yml"
+    #   ansible.galaxy_role_file = "requirements.yml"
+    #   ansible.become = true
+    #   ansible.verbose = true
+    #   ansible.extra_vars = {}
+    # end
+  end
 
   config.vm.define "minio1" do |m|
     m.vm.box = "ubuntu/bionic64"
@@ -41,8 +46,8 @@ Vagrant.configure("2") do |config|
     m.vm.hostname = "minio1"
 
     m.vm.provision :ansible do |ansible|
-      ansible.playbook = "playbook.yml"
-      ansible.galaxy_role_file = "requirements.yml"
+      ansible.playbook = "provisioners/playbook.yml"
+      ansible.galaxy_role_file = "provisioners/requirements.yml"
       ansible.become = true
       ansible.verbose = true
       ansible.extra_vars = {
@@ -67,8 +72,8 @@ Vagrant.configure("2") do |config|
     m.vm.hostname = "minio2"
 
     m.vm.provision :ansible do |ansible|
-      ansible.playbook = "playbook.yml"
-      ansible.galaxy_role_file = "requirements.yml"
+      ansible.playbook = "provisioners/playbook.yml"
+      ansible.galaxy_role_file = "provisioners/requirements.yml"
       ansible.become = true
       ansible.verbose = true
       ansible.extra_vars = {
@@ -93,8 +98,8 @@ Vagrant.configure("2") do |config|
     m.vm.hostname = "minio3"
 
     m.vm.provision :ansible do |ansible|
-      ansible.playbook = "playbook.yml"
-      ansible.galaxy_role_file = "requirements.yml"
+      ansible.playbook = "provisioners/playbook.yml"
+      ansible.galaxy_role_file = "provisioners/requirements.yml"
       ansible.become = true
       ansible.verbose = true
       ansible.extra_vars = {
@@ -119,8 +124,8 @@ Vagrant.configure("2") do |config|
     m.vm.hostname = "minio4"
 
     m.vm.provision :ansible do |ansible|
-      ansible.playbook = "playbook.yml"
-      ansible.galaxy_role_file = "requirements.yml"
+      ansible.playbook = "provisioners/playbook.yml"
+      ansible.galaxy_role_file = "provisioners/requirements.yml"
       ansible.become = true
       ansible.verbose = true
       ansible.extra_vars = {
