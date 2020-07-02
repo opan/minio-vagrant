@@ -16,6 +16,7 @@ Vagrant.configure("2") do |config|
     ha.vm.provision "file", source: "configs/haproxy.cfg", destination: "/tmp/haproxy.cfg"
     ha.vm.provision "file", source: "configs/keepalived-active.conf", destination: "/tmp/keepalived.conf"
     ha.vm.provision "file", source: "scripts/keepalived-as-primary.sh", destination: "/tmp/primary.sh"
+    ha.vm.provision "file", source: "scripts/keepalived-notify.sh", destination: "/tmp/notify.sh"
     ha.vm.provision "shell", path: "scripts/after-setup.sh"
     # ha.vm.provision :ansible do |ansible|
     #   ansible.playbook = "playbook-haproxy.yml"
@@ -34,6 +35,7 @@ Vagrant.configure("2") do |config|
     ha.vm.provision "shell", path: "scripts/haproxy-keepalived-install.sh"
     ha.vm.provision "file", source: "configs/haproxy.cfg", destination: "/tmp/haproxy.cfg"
     ha.vm.provision "file", source: "configs/keepalived-passive.conf", destination: "/tmp/keepalived.conf"
+    ha.vm.provision "file", source: "scripts/keepalived-notify.sh", destination: "/tmp/notify.sh"
     ha.vm.provision "shell", path: "scripts/after-setup.sh"
 
     # ha.vm.provision :ansible do |ansible|
